@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!---
+    Views são componentes que conseguem ser vistos (TextView, ImageView, Buttons).
+        width -> altura
+        height -> largura
+        wrap_content -> preenche conforme a totalidade do conteudo
+        match_parent -> preenche a totalidade do conteudo conforme o pai
+
+    ViewGroups é o agrupamento de componentes.
+    ViewGroup define a estrutura de layout.
+    ViewGroups: LinearLayout, ConstraintLayout, RelativeLayout
+
+    LinearLayout:
+        Organiza de forma linear os filhos dessa tela (vertical ou horizontal).
+
+    RelativeLayout:
+        Forma de agrupamento de widget onde cada view pode ser relativa dentro dele.
+
+    ConstraintLayout:
+        Permite que faça layout complexos atraves de "links" de componentes
+        parent -> pai
+        0dp -> acompanha o tamanho da constraint
+
+        layout_constraintStart_toStartOf
+            link do inicio da view
+        layout_constraintTop_toTopOf
+            link do topo da view
+        layout_constraintEnd_toEndOf
+            link do final da view
+        layout_constraintBottom_toBottomOf
+            link da parte de baixo da view
+-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/tv_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/title"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_tab_carros"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/carros"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/tv_titulo"
+        app:layout_constraintTop_toBottomOf="@id/tv_titulo" />
+
+    <TextView
+        android:id="@+id/tv_tab_favoritos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="@string/favoritos"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/tv_tab_carros"
+        app:layout_constraintTop_toTopOf="@id/tv_tab_carros" />
+
+    <ImageView
+        android:id="@+id/iv_image_car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/eletric_car"
+        app:layout_constraintLeft_toLeftOf="@id/tv_titulo"
+        app:layout_constraintTop_toBottomOf="@id/tv_tab_carros" />
+
+    <TextView
+        android:id="@+id/tv_preco"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="@string/preco"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_image_car" />
+
+    <TextView
+        android:id="@+id/tv_preco_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="R$ 300.000,00"
+        app:layout_constraintStart_toEndOf="@id/tv_preco"
+        app:layout_constraintTop_toBottomOf="@id/iv_image_car" />
+
+    <TextView
+        android:id="@+id/tv_bateria"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="@string/bateria"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_preco" />
+
+    <TextView
+        android:id="@+id/tv_bateria_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="R$ 300 kWh"
+        app:layout_constraintStart_toEndOf="@id/tv_bateria"
+        app:layout_constraintTop_toTopOf="@id/tv_bateria" />
+
+    <TextView
+        android:id="@+id/tv_potencia"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="@string/potencia"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_bateria" />
+
+    <TextView
+        android:id="@+id/tv_potencia_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="628 cv"
+        app:layout_constraintStart_toEndOf="@id/tv_potencia"
+        app:layout_constraintTop_toTopOf="@id/tv_potencia" />
+
+    <TextView
+        android:id="@+id/tv_recarga"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="@string/recarga"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_potencia" />
+
+    <TextView
+        android:id="@+id/tv_recarga_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="23 min"
+        app:layout_constraintStart_toEndOf="@id/tv_recarga"
+        app:layout_constraintTop_toTopOf="@id/tv_recarga" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
