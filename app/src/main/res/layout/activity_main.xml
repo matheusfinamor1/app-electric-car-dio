@@ -40,6 +40,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.MainActivity">
+    
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_titulo">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/carros"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/favoritos"/>
+
+    </com.google.android.material.tabs.TabLayout>
+    
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp_view_pager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/tab_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    </androidx.viewpager2.widget.ViewPager2>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_titulo"
@@ -51,49 +83,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_tab_carros"
-        style="@style/TextAppearance.AppCompat.Body2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/carros"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/tv_titulo"
-        app:layout_constraintTop_toBottomOf="@id/tv_titulo" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_tab_favoritos"
-        style="@style/TextAppearance.AppCompat.Body2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/favoritos"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/tv_tab_carros"
-        app:layout_constraintTop_toTopOf="@id/tv_tab_carros" />
-
-
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_redirection_calculate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/ir_para_calculadora"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-    
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_list_cars"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/tv_tab_carros"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btn_redirection_calculate"
-        tools:listitem="@layout/car_item"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
