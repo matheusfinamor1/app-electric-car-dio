@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Coloca as permissoes do app que o usuario precisa (internet,camera...)
+    Toda activity criada deve ser declarada no Manifest.
+
+    targetAPi -> Nível da API minimo exigido pelo app (SDK)
+    icon -> icone do app
+-->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -13,7 +21,7 @@
         android:theme="@style/Theme.EletricCarApp"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +29,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".presentation.CalculateAutonomyActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+
+        </activity>
+
     </application>
 
 </manifest>

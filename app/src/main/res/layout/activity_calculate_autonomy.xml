@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_close" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_title_calculate_autonomy"
+        style="@style/TextAppearance.MaterialComponents.Headline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/calcular_autonomia"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_close" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/et_preco_kwh"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/preco_kwh"
+        android:inputType="numberDecimal"
+        android:layout_margin="16dp"
+        android:maxLength="10"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_calculate_autonomy"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/et_km_percorrido"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/km_percorrido"
+        android:inputType="numberDecimal"
+        android:maxLength="10"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@id/et_preco_kwh"
+        app:layout_constraintTop_toBottomOf="@id/et_preco_kwh"
+        app:layout_constraintEnd_toEndOf="@id/et_preco_kwh"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_calcular"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/calcular"
+        app:layout_constraintTop_toBottomOf="@id/et_km_percorrido"
+        app:layout_constraintStart_toStartOf="@id/et_km_percorrido"
+        app:layout_constraintEnd_toEndOf="@id/et_km_percorrido"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_resultado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btn_calcular"
+        app:layout_constraintStart_toStartOf="@id/btn_calcular"
+        app:layout_constraintEnd_toEndOf="@id/btn_calcular"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
