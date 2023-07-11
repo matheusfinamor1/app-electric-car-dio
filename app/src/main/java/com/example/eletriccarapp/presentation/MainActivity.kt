@@ -2,16 +2,18 @@ package com.example.eletriccarapp.presentation
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.example.eletriccarapp.R
+import com.example.eletriccarapp.data.CarFactory
+import com.example.eletriccarapp.presentation.adapter.CarAdapter
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var btnRedirectionCalculate: Button
-    lateinit var list: ListView
+    lateinit var listCars: RecyclerView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupView() {
         btnRedirectionCalculate = findViewById(R.id.btn_redirection_calculate)
-        list = findViewById(R.id.lv_list_inf)
+        listCars = findViewById(R.id.rv_list_cars)
     }
 
     private fun setupListeners() {
@@ -33,17 +35,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupList() {
-        val data = arrayOf(
-            "Cupcake",
-            "Donut",
-            "Froyo",
-            "Gingerbread",
-            "Honeycomb",
-            "Ice cream Sandwich",
-            "Jelly Bean"
-        )
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, data)
-        list.adapter = adapter
+        val data = CarFactory.list
+        val adapter = CarAdapter(data)
+        listCars.adapter = adapter
+
     }
 
 }
