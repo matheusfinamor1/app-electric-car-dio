@@ -155,7 +155,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/preco_kwh"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:layout_margin="16dp"
         android:maxLength="10"
         app:layout_constraintTop_toBottomOf="@id/tv_recarga_value"
@@ -167,7 +167,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/km_percorrido"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:maxLength="10"
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="@id/et_preco_kwh"
@@ -183,6 +183,14 @@
         app:layout_constraintTop_toBottomOf="@id/et_km_percorrido"
         app:layout_constraintStart_toStartOf="@id/et_km_percorrido"
         app:layout_constraintEnd_toEndOf="@id/et_km_percorrido"/>
+
+    <TextView
+        android:id="@+id/tv_resultado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btn_calcular"
+        app:layout_constraintStart_toStartOf="@id/btn_calcular"
+        app:layout_constraintEnd_toEndOf="@id/btn_calcular"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
