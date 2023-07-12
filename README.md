@@ -24,7 +24,7 @@ Com ele, reforçamos e aprendemos conceitos desde o mais básico do desenvolvime
 
 # :heavy_check_mark: Técnicas e tecnologias utilizadas
 
-**Kotlin
-Android Jetpack
-Clean Architecture
-Principios SOLID**
+**Kotlin,
+Android Jetpack,
+Clean Architecture,
+Principios SOLID.**
