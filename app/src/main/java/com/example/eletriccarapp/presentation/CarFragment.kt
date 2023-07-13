@@ -11,7 +11,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eletriccarapp.R
@@ -28,6 +31,8 @@ class CarFragment : Fragment() {
     lateinit var fabRedirectionCalculate: FloatingActionButton
     lateinit var listCars: RecyclerView
     lateinit var progressBar: ProgressBar
+    lateinit var noInternetImage: ImageView
+    lateinit var noInternetText: TextView
     val carArray: ArrayList<Car> = ArrayList()
 
     override fun onCreateView(
@@ -45,20 +50,35 @@ class CarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupView(view)
         setupListeners()
-        checkForInternet(context)
-        callService()
+    }
+    override fun onResume() {
+        super.onResume()
+        if(checkForInternet(context)){
+            callService()
+        }else{
+            emptyState()
+        }
+    }
+
+    private fun emptyState() {
+        progressBar.isVisible = false
+        listCars.isVisible = false
+        noInternetImage.isVisible = true
+        noInternetText.isVisible = true
     }
 
     fun setupView(view: View) {
         fabRedirectionCalculate = view.findViewById(R.id.fab_calculate)
         listCars = view.findViewById(R.id.rv_list_cars)
         progressBar = view.findViewById(R.id.pb_loader)
+        noInternetImage = view.findViewById(R.id.iv_empty_state)
+        noInternetText = view.findViewById(R.id.tv_no_wifi)
     }
 
     private fun setupList() {
         val carAdapter = CarAdapter(carArray)
         listCars.apply {
-            visibility = View.VISIBLE
+            isVisible = true
             adapter = carAdapter
         }
 
@@ -102,7 +122,7 @@ class CarFragment : Fragment() {
         override fun onPreExecute() {
             super.onPreExecute()
             Log.d("MyTask", "Iniciando...")
-            progressBar.visibility = View.VISIBLE
+            progressBar.isVisible = true
         }
 
         override fun doInBackground(vararg url: String?): String {
@@ -171,10 +191,10 @@ class CarFragment : Fragment() {
                     carArray.add(model)
 
                 }
-                progressBar.visibility = View.GONE
+                progressBar.isVisible = false
+                noInternetImage.isVisible = false
+                noInternetText.isVisible = false
                 setupList()
-
-
             } catch (ex: Exception) {
                 Log.e("Erro ->", ex.message.toString())
             }
