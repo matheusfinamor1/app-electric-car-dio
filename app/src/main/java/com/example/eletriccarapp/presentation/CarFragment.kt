@@ -1,6 +1,5 @@
 package com.example.eletriccarapp.presentation
 
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
@@ -19,13 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eletriccarapp.R
 import com.example.eletriccarapp.data.CarsApi
-import com.example.eletriccarapp.data.local.CarsContract.CarEntry.COLUMN_NAME_BATERIA
-import com.example.eletriccarapp.data.local.CarsContract.CarEntry.COLUMN_NAME_POTENCIA
-import com.example.eletriccarapp.data.local.CarsContract.CarEntry.COLUMN_NAME_PRECO
-import com.example.eletriccarapp.data.local.CarsContract.CarEntry.COLUMN_NAME_RECARGA
-import com.example.eletriccarapp.data.local.CarsContract.CarEntry.COLUMN_NAME_URL_PHOTO
-import com.example.eletriccarapp.data.local.CarsContract.CarEntry.TABLE_NAME
-import com.example.eletriccarapp.data.local.CarsDbHelper
+import com.example.eletriccarapp.data.local.CarRepository
 import com.example.eletriccarapp.domain.Car
 import com.example.eletriccarapp.presentation.adapter.CarAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -61,36 +54,38 @@ class CarFragment : Fragment() {
         setupView(view)
         setupListeners()
     }
+
     override fun onResume() {
         super.onResume()
-        if(checkForInternet(context)){
+        if (checkForInternet(context)) {
             getAllCars()
-        }else{
+        } else {
             emptyState()
         }
     }
 
-    private fun getAllCars(){
-        carsApi.getAllCars().enqueue(object : Callback<List<Car>>{
+    private fun getAllCars() {
+        carsApi.getAllCars().enqueue(object : Callback<List<Car>> {
             override fun onResponse(call: Call<List<Car>>, response: Response<List<Car>>) {
-                if(response.isSuccessful){
+                if (response.isSuccessful) {
                     progressBar.isVisible = false
                     noInternetImage.isVisible = false
                     noInternetText.isVisible = false
-                    response.body()?.let {listCars ->
+                    response.body()?.let { listCars ->
                         setupList(listCars)
                     }
-                }else{
-                    Toast.makeText(context,R.string.response_error, Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(context, R.string.response_error, Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<List<Car>>, t: Throwable) {
-                Toast.makeText(context,R.string.response_error, Toast.LENGTH_LONG).show()
+                Toast.makeText(context, R.string.response_error, Toast.LENGTH_LONG).show()
             }
 
         })
     }
+
     private fun emptyState() {
         progressBar.isVisible = false
         listCars.isVisible = false
@@ -98,7 +93,7 @@ class CarFragment : Fragment() {
         noInternetText.isVisible = true
     }
 
-    private fun setupRetrofit(){
+    private fun setupRetrofit() {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://igorbag.github.io/cars-api/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -106,6 +101,7 @@ class CarFragment : Fragment() {
 
         carsApi = retrofit.create(CarsApi::class.java)
     }
+
     fun setupView(view: View) {
         fabRedirectionCalculate = view.findViewById(R.id.fab_calculate)
         listCars = view.findViewById(R.id.rv_list_cars)
@@ -119,6 +115,12 @@ class CarFragment : Fragment() {
         listCars.apply {
             isVisible = true
             adapter = carAdapter
+        }
+
+        carAdapter.carItemListener = { car ->
+            val isSaved = CarRepository(requireContext()).saveOnDatabase(car)
+            if (isSaved)
+                Toast.makeText(context, "Favoritado com sucesso!", Toast.LENGTH_LONG).show()
         }
 
     }
@@ -148,21 +150,6 @@ class CarFragment : Fragment() {
             @Suppress("DEPRECATION")
             return networkInfo.isConnected
         }
-    }
-
-    private fun saveOnDatabase(car: Car){
-        val dbHelper = CarsDbHelper(requireContext())
-        val db = dbHelper.writableDatabase
-
-        val values = ContentValues().apply {
-            put(COLUMN_NAME_PRECO, car.preco)
-            put(COLUMN_NAME_BATERIA, car.bateria)
-            put(COLUMN_NAME_POTENCIA, car.potencia)
-            put(COLUMN_NAME_RECARGA, car.recarga)
-            put(COLUMN_NAME_URL_PHOTO, car.urlPhoto)
-        }
-
-        val newRegister = db?.insert(TABLE_NAME, null, values)
     }
 
 }
