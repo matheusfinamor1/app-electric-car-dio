@@ -3,6 +3,7 @@ package com.example.eletriccarapp.presentation.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eletriccarapp.R
@@ -10,6 +11,8 @@ import com.example.eletriccarapp.domain.Car
 
 
 class CarAdapter(private val cars: List<Car>) : RecyclerView.Adapter<CarAdapter.CarsViewHolder>() {
+
+    var carItemListener: (Car) -> Unit = {}
 
     /**
      * Cria uma nova view.
@@ -35,6 +38,24 @@ class CarAdapter(private val cars: List<Car>) : RecyclerView.Adapter<CarAdapter.
         holder.battery.text = cars[position].bateria
         holder.power.text = cars[position].potencia
         holder.recharge.text = cars[position].recarga
+        holder.favorite.setOnClickListener {
+            val car = cars[position]
+            carItemListener(car)
+            setupFavorite(car, holder)
+        }
+    }
+
+    private fun setupFavorite(
+        car: Car,
+        holder: CarsViewHolder
+    ) {
+        car.isFavorite = !car.isFavorite
+
+        if (car.isFavorite) {
+            holder.favorite.setImageResource(R.drawable.ic_star_selected)
+        } else {
+            holder.favorite.setImageResource(R.drawable.ic_star)
+        }
     }
 
     /**
@@ -46,6 +67,7 @@ class CarAdapter(private val cars: List<Car>) : RecyclerView.Adapter<CarAdapter.
         val battery: TextView
         val power: TextView
         val recharge: TextView
+        val favorite: ImageView
 
         init {
 
@@ -54,6 +76,7 @@ class CarAdapter(private val cars: List<Car>) : RecyclerView.Adapter<CarAdapter.
                 battery = findViewById(R.id.tv_bateria_value)
                 power = findViewById(R.id.tv_potencia_value)
                 recharge = findViewById(R.id.tv_recarga_value)
+                favorite = findViewById(R.id.iv_favorite)
             }
 
         }
