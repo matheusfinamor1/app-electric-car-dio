@@ -3,6 +3,7 @@ package com.example.eletriccarapp.data.local
 import android.provider.BaseColumns
 
 object CarsContract {
+
     object CarEntry : BaseColumns {
         const val TABLE_NAME = "car"
         const val COLUMN_NAME_ID = "id"

@@ -1,5 +1,6 @@
 package com.example.eletriccarapp.presentation
 
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
@@ -18,6 +19,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eletriccarapp.R
 import com.example.eletriccarapp.data.CarsApi
+import com.example.eletriccarapp.data.local.CarsContract.CarEntry.COLUMN_NAME_BATERIA
+import com.example.eletriccarapp.data.local.CarsContract.CarEntry.COLUMN_NAME_POTENCIA
+import com.example.eletriccarapp.data.local.CarsContract.CarEntry.COLUMN_NAME_PRECO
+import com.example.eletriccarapp.data.local.CarsContract.CarEntry.COLUMN_NAME_RECARGA
+import com.example.eletriccarapp.data.local.CarsContract.CarEntry.COLUMN_NAME_URL_PHOTO
+import com.example.eletriccarapp.data.local.CarsContract.CarEntry.TABLE_NAME
+import com.example.eletriccarapp.data.local.CarsDbHelper
 import com.example.eletriccarapp.domain.Car
 import com.example.eletriccarapp.presentation.adapter.CarAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -140,6 +148,21 @@ class CarFragment : Fragment() {
             @Suppress("DEPRECATION")
             return networkInfo.isConnected
         }
+    }
+
+    private fun saveOnDatabase(car: Car){
+        val dbHelper = CarsDbHelper(requireContext())
+        val db = dbHelper.writableDatabase
+
+        val values = ContentValues().apply {
+            put(COLUMN_NAME_PRECO, car.preco)
+            put(COLUMN_NAME_BATERIA, car.bateria)
+            put(COLUMN_NAME_POTENCIA, car.potencia)
+            put(COLUMN_NAME_RECARGA, car.recarga)
+            put(COLUMN_NAME_URL_PHOTO, car.urlPhoto)
+        }
+
+        val newRegister = db?.insert(TABLE_NAME, null, values)
     }
 
 }
