@@ -23,6 +23,12 @@ class CalculateAutonomyActivity : AppCompatActivity() {
         setContentView(R.layout.activity_calculate_autonomy)
         setupView()
         setupListener()
+        setupCachedResult()
+    }
+
+    private fun setupCachedResult() {
+        val valueCalculate = getSharedPref()
+        result.text = valueCalculate.toString()
     }
 
     private fun setupView() {
@@ -59,6 +65,11 @@ class CalculateAutonomyActivity : AppCompatActivity() {
             putFloat(getString(R.string.saved_calc), result)
             apply()
         }
+    }
+
+    private fun getSharedPref(): Float {
+        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        return sharedPref.getFloat(getString(R.string.saved_calc), 0.0f)
     }
 
 }
