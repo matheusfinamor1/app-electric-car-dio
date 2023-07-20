@@ -118,9 +118,7 @@ class CarFragment : Fragment() {
         }
 
         carAdapter.carItemListener = { car ->
-            val isSaved = CarRepository(requireContext()).saveOnDatabase(car)
-            if (isSaved)
-                Toast.makeText(context, "Favoritado com sucesso!", Toast.LENGTH_LONG).show()
+            CarRepository(requireContext()).saveIfNotExist(car)
         }
 
     }

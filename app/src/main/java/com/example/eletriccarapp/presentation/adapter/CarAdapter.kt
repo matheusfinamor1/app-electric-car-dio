@@ -10,7 +10,8 @@ import com.example.eletriccarapp.R
 import com.example.eletriccarapp.domain.Car
 
 
-class CarAdapter(private val cars: List<Car>) : RecyclerView.Adapter<CarAdapter.CarsViewHolder>() {
+class CarAdapter(private val cars: List<Car>, private val isFavoriteScreen: Boolean = false) :
+    RecyclerView.Adapter<CarAdapter.CarsViewHolder>() {
 
     var carItemListener: (Car) -> Unit = {}
 
@@ -38,6 +39,9 @@ class CarAdapter(private val cars: List<Car>) : RecyclerView.Adapter<CarAdapter.
         holder.battery.text = cars[position].bateria
         holder.power.text = cars[position].potencia
         holder.recharge.text = cars[position].recarga
+        if (isFavoriteScreen) {
+            holder.favorite.setImageResource(R.drawable.ic_star_selected)
+        }
         holder.favorite.setOnClickListener {
             val car = cars[position]
             carItemListener(car)
@@ -70,7 +74,6 @@ class CarAdapter(private val cars: List<Car>) : RecyclerView.Adapter<CarAdapter.
         val favorite: ImageView
 
         init {
-
             view.apply {
                 price = findViewById(R.id.tv_preco_value)
                 battery = findViewById(R.id.tv_bateria_value)
