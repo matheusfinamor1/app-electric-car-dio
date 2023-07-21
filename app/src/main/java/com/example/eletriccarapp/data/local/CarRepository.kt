@@ -103,11 +103,11 @@ class CarRepository(private val context: Context) {
         )
     }
 
-    fun saveIfNotExist(car: Car){
-        val car = findCarById(car.id)
+    fun saveIfNotExist(carItem: Car){
+        val car = findCarById(carItem.id)
 
         if(car.id == ID_WHEN_NO_CAR){
-            saveOnDatabase(car)
+            saveOnDatabase(carItem)
         }
 
     }
