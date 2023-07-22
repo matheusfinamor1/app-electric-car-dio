@@ -45,7 +45,7 @@ class FavoritesFragment: Fragment() {
         }
 
         carAdapter.carItemListener = { car ->
-            // @TODO IMPLEMENTAR DELETE NO BANCO DE DADOS
+            CarRepository(requireContext()).deleteCarById(car)
         }
     }
     private fun setupView(view: View) {

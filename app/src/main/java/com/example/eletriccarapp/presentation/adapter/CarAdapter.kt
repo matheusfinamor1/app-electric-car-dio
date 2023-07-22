@@ -60,6 +60,10 @@ class CarAdapter(private val cars: List<Car>, private val isFavoriteScreen: Bool
         } else {
             holder.favorite.setImageResource(R.drawable.ic_star)
         }
+
+        if(isFavoriteScreen){
+            holder.favorite.setImageResource(R.drawable.ic_star)
+        }
     }
 
     /**

@@ -44,6 +44,25 @@ class CarRepository(private val context: Context) {
         return isSaved
     }
 
+    fun deleteCarById(carItem: Car) {
+        try {
+            val dbHelper = CarsDbHelper(context)
+            val db = dbHelper.writableDatabase
+
+            val whereClause = "$COLUMN_NAME_ID = ?"
+            val whereArgs = arrayOf(carItem.id.toString())
+
+            db.delete(CarsContract.CarEntry.TABLE_NAME, whereClause, whereArgs)
+
+            carItem.isFavorite = false
+
+            db.close()
+
+        } catch (e: Exception) {
+            Log.e("Error ->", "deleteCarById: $e")
+        }
+    }
+
     private fun findCarById(id: Int): Car {
         val dbHelper = CarsDbHelper(context)
         val db = dbHelper.readableDatabase
@@ -75,7 +94,7 @@ class CarRepository(private val context: Context) {
             null
         )
 
-        var itemId: Long =  0
+        var itemId: Long = 0
         var itemPreco = ""
         var itemBateria = ""
         var itemPotencia = ""
@@ -83,12 +102,12 @@ class CarRepository(private val context: Context) {
         var itemUrlPhoto = ""
         with(cursor) {
             while (moveToNext()) {
-                 itemId = getLong(getColumnIndexOrThrow(COLUMN_NAME_ID))
-                 itemPreco = getString(getColumnIndexOrThrow(COLUMN_NAME_PRECO))
-                 itemBateria = getString(getColumnIndexOrThrow(COLUMN_NAME_BATERIA))
-                 itemPotencia = getString(getColumnIndexOrThrow(COLUMN_NAME_POTENCIA))
-                 itemRecarga = getString(getColumnIndexOrThrow(COLUMN_NAME_RECARGA))
-                 itemUrlPhoto = getString(getColumnIndexOrThrow(COLUMN_NAME_URL_PHOTO))
+                itemId = getLong(getColumnIndexOrThrow(COLUMN_NAME_ID))
+                itemPreco = getString(getColumnIndexOrThrow(COLUMN_NAME_PRECO))
+                itemBateria = getString(getColumnIndexOrThrow(COLUMN_NAME_BATERIA))
+                itemPotencia = getString(getColumnIndexOrThrow(COLUMN_NAME_POTENCIA))
+                itemRecarga = getString(getColumnIndexOrThrow(COLUMN_NAME_RECARGA))
+                itemUrlPhoto = getString(getColumnIndexOrThrow(COLUMN_NAME_URL_PHOTO))
             }
         }
         cursor.close()
@@ -103,16 +122,16 @@ class CarRepository(private val context: Context) {
         )
     }
 
-    fun saveIfNotExist(car: Car){
-        val car = findCarById(car.id)
+    fun saveIfNotExist(carItem: Car) {
+        val car = findCarById(carItem.id)
 
-        if(car.id == ID_WHEN_NO_CAR){
-            saveOnDatabase(car)
+        if (car.id == ID_WHEN_NO_CAR) {
+            saveOnDatabase(carItem)
         }
 
     }
 
-    fun getAll(): List<Car>{
+    fun getAll(): List<Car> {
         val dbHelper = CarsDbHelper(context)
         val db = dbHelper.readableDatabase
 
@@ -166,7 +185,7 @@ class CarRepository(private val context: Context) {
         return cars
     }
 
-    companion object{
+    companion object {
         const val ID_WHEN_NO_CAR = 0
     }
 }
