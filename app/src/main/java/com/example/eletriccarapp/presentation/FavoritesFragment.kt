@@ -6,27 +6,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
-import com.example.eletriccarapp.R
 import com.example.eletriccarapp.data.local.CarRepository
+import com.example.eletriccarapp.databinding.FavoritesFragmentBinding
 import com.example.eletriccarapp.domain.Car
 import com.example.eletriccarapp.presentation.adapter.CarAdapter
 
-class FavoritesFragment: Fragment() {
+class FavoritesFragment : Fragment() {
 
-    private lateinit var listCarsFavorite: RecyclerView
+    private var _binding: FavoritesFragmentBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.favorites_fragment, container,false)
+    ): View {
+        _binding = FavoritesFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupView(view)
         setupList()
     }
 
@@ -39,7 +39,7 @@ class FavoritesFragment: Fragment() {
     private fun setupList() {
         val carList = getCarsOnLocalDb()
         val carAdapter = CarAdapter(carList, isFavoriteScreen = true)
-        listCarsFavorite.apply {
+        binding.rvListCarsFavorite.apply {
             isVisible = true
             adapter = carAdapter
         }
@@ -48,7 +48,9 @@ class FavoritesFragment: Fragment() {
             CarRepository(requireContext()).deleteCarById(car)
         }
     }
-    private fun setupView(view: View) {
-        listCarsFavorite = view.findViewById(R.id.rv_list_cars_favorite)
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

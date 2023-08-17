@@ -1,7 +1,6 @@
 package com.example.eletriccarapp.presentation
 
 import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -9,19 +8,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import com.example.eletriccarapp.R
 import com.example.eletriccarapp.data.CarsApi
 import com.example.eletriccarapp.data.local.CarRepository
+import com.example.eletriccarapp.databinding.CarFragmentBinding
 import com.example.eletriccarapp.domain.Car
 import com.example.eletriccarapp.presentation.adapter.CarAdapter
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,19 +25,18 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class CarFragment : Fragment() {
 
-    lateinit var fabRedirectionCalculate: FloatingActionButton
-    lateinit var listCars: RecyclerView
-    lateinit var progressBar: ProgressBar
-    lateinit var noInternetImage: ImageView
-    lateinit var noInternetText: TextView
+    private var _binding: CarFragmentBinding? = null
+    private val binding get() = _binding!!
+
     lateinit var carsApi: CarsApi
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.car_fragment, container, false)
+    ): View {
+        _binding = CarFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     /**
@@ -51,8 +45,6 @@ class CarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRetrofit()
-        setupView(view)
-        setupListeners()
     }
 
     override fun onResume() {
@@ -68,9 +60,9 @@ class CarFragment : Fragment() {
         carsApi.getAllCars().enqueue(object : Callback<List<Car>> {
             override fun onResponse(call: Call<List<Car>>, response: Response<List<Car>>) {
                 if (response.isSuccessful) {
-                    progressBar.isVisible = false
-                    noInternetImage.isVisible = false
-                    noInternetText.isVisible = false
+                    binding.pbLoader.isVisible = false
+                    binding.tvNoWifi.isVisible = false
+                    binding.ivEmptyState.isVisible = false
                     response.body()?.let { listCars ->
                         setupList(listCars)
                     }
@@ -87,10 +79,10 @@ class CarFragment : Fragment() {
     }
 
     private fun emptyState() {
-        progressBar.isVisible = false
-        listCars.isVisible = false
-        noInternetImage.isVisible = true
-        noInternetText.isVisible = true
+        binding.pbLoader.isVisible = false
+        binding.rvListCars.isVisible = false
+        binding.ivEmptyState.isVisible = true
+        binding.tvNoWifi.isVisible = true
     }
 
     private fun setupRetrofit() {
@@ -102,17 +94,9 @@ class CarFragment : Fragment() {
         carsApi = retrofit.create(CarsApi::class.java)
     }
 
-    fun setupView(view: View) {
-        fabRedirectionCalculate = view.findViewById(R.id.fab_calculate)
-        listCars = view.findViewById(R.id.rv_list_cars)
-        progressBar = view.findViewById(R.id.pb_loader)
-        noInternetImage = view.findViewById(R.id.iv_empty_state)
-        noInternetText = view.findViewById(R.id.tv_no_wifi)
-    }
-
     private fun setupList(list: List<Car>) {
         val carAdapter = CarAdapter(list)
-        listCars.apply {
+        binding.rvListCars.apply {
             isVisible = true
             adapter = carAdapter
         }
@@ -123,11 +107,6 @@ class CarFragment : Fragment() {
 
     }
 
-    private fun setupListeners() {
-        fabRedirectionCalculate.setOnClickListener {
-            startActivity(Intent(context, CalculateAutonomyActivity::class.java))
-        }
-    }
 
     private fun checkForInternet(context: Context?): Boolean {
         val connectivityManager =
@@ -148,6 +127,11 @@ class CarFragment : Fragment() {
             @Suppress("DEPRECATION")
             return networkInfo.isConnected
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 }
