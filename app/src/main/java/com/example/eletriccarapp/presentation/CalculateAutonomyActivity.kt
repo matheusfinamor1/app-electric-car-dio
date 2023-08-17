@@ -2,66 +2,49 @@ package com.example.eletriccarapp.presentation
 
 import android.content.Context
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eletriccarapp.R
+import com.example.eletriccarapp.databinding.ActivityCalculateAutonomyBinding
 
 class CalculateAutonomyActivity : AppCompatActivity() {
 
-    lateinit var price: EditText
-    lateinit var kmTraveled: EditText
-    lateinit var result: TextView
-    lateinit var btnCalculate: Button
-    lateinit var btnClose: ImageView
-
+    private val binding by lazy { ActivityCalculateAutonomyBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_calculate_autonomy)
-        setupView()
+        setContentView(binding.root)
         setupListener()
         setupCachedResult()
     }
 
     private fun setupCachedResult() {
         val valueCalculate = getSharedPref()
-        result.text = valueCalculate.toString()
-    }
-
-    private fun setupView() {
-        price = findViewById(R.id.et_preco_kwh)
-        kmTraveled = findViewById(R.id.et_km_percorrido)
-        result = findViewById(R.id.tv_resultado)
-        btnCalculate = findViewById(R.id.btn_calcular)
-        btnClose = findViewById(R.id.iv_close)
+        binding.tvResultado.text = valueCalculate.toString()
     }
 
     private fun calculate() {
-        val price = price.text.toString().toFloat()
-        val km = kmTraveled.text.toString().toFloat()
+        val price = binding.etPrecoKwh.text.toString().toFloat()
+        val km = binding.etKmPercorrido.text.toString().toFloat()
         val resultPrice = price / km
-        result.text = resultPrice.toString()
+        binding.tvResultado.text = resultPrice.toString()
         saveSharedPref(resultPrice)
     }
 
-    private fun setupListener(){
-        btnCalculate.setOnClickListener {
+    private fun setupListener() {
+        binding.btnCalcular.setOnClickListener {
             calculate()
         }
 
-        btnClose.setOnClickListener {
+        binding.ivClose.setOnClickListener {
             // Desempilha e volta para tela anterior
             finish()
         }
     }
 
-    private fun saveSharedPref(result: Float){
+    private fun saveSharedPref(result: Float) {
         // Context.MODE_PRIVATE = Preferencia privada (utilizada somente no escopo do app)
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
-        with(sharedPref.edit()){
+        with(sharedPref.edit()) {
             putFloat(getString(R.string.saved_calc), result)
             apply()
         }
